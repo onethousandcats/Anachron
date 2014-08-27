@@ -28,7 +28,7 @@ namespace Anachron
         {
             _character = character;
             Rows = 6;
-            Columns = 6;
+            Columns = 4;
             currentFrame = 0;
             totalFrames = Columns;
             this.x = x;
@@ -71,8 +71,8 @@ namespace Anachron
             //int row = (int)((float)currentFrame / (float)Columns);
             
             int row = 0;
-            Console.WriteLine("right: " + this.right + " -- " +  "moving: " + this.moving);
-            
+            Console.WriteLine(this.x + ", " + this.y);
+
             if (!this.right)
                 row += 1;
 
@@ -99,8 +99,6 @@ namespace Anachron
                 }
 
             }
-
-            Console.WriteLine("row: " + row);
 
             int column = currentFrame % Columns;
 

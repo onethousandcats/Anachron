@@ -69,6 +69,9 @@
     <None Include="Content\astro.png.best">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\astro.png.826">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Content\astro.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

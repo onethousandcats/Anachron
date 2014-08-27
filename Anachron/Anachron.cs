@@ -19,7 +19,7 @@ namespace Anachron
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private Character _astro;
+        private World _world;
 
         int frameRate = 8; //100 = 1 seconds
         int time = 0;
@@ -29,6 +29,12 @@ namespace Anachron
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 1400;
+            graphics.PreferredBackBufferHeight = 800;
+            
+            graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
         }
 
         /// <summary>
@@ -54,7 +60,9 @@ namespace Anachron
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D k = Content.Load<Texture2D>("astro");
-            _astro = new Character(k, 100, 100);
+            Character astro = new Character(k, 100, 100);
+
+            _world.AddCharacter(astro);
 
         }
 
@@ -80,27 +88,40 @@ namespace Anachron
             if (Keyboard.GetState().GetPressedKeys().Length == 0)
             {
                 //no keys are being pressed, character is not moving
-                _astro.IsMoving(false);
+                foreach (Character c in _world.Characters)
+                {
+                    c.IsMoving(false);
+                }
+
             }
             
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                _astro.IsMoving(true);
-                _astro.IsGoingRight();
+                foreach (Character c in _world.Characters)
+                {
+                    c.IsMoving(true);
+                    c.IsGoingRight();
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                _astro.IsMoving(true);
-                _astro.IsGoingLeft();
+                foreach (Character c in _world.Characters)
+                {
+                    c.IsMoving(true);
+                    c.IsGoingLeft();
+                }
             }
 
             time++;
-            Console.WriteLine(time);
             if (time == frameRate)
             { 
-                _astro.Update();
+                foreach (Character c in _world.Characters)
+                {
+                    c.Update();
+                }
+                
                 time = 0;
             }
 
@@ -115,10 +136,10 @@ namespace Anachron
         {
             GraphicsDevice.Clear(Color.White);
 
-            Console.WriteLine(gameTime.TotalGameTime);
-
-            _astro.Draw(spriteBatch, new Vector2(_astro.x, _astro.y));
-
+            foreach (Character c in _world.Characters)
+            {
+                c.Draw(spriteBatch, new Vector2(c.x, c.y));
+            }
             base.Draw(gameTime);
         }
     }

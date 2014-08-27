@@ -7,6 +7,8 @@ using System.Text;
 
 namespace Anachron
 {
+    enum Direction { Left, Right };
+
     class Character
     {
         private Texture2D _character;
@@ -16,7 +18,7 @@ namespace Anachron
         private int totalFrames;
 
         private bool moving;
-        private bool right;
+        private Direction direction;
 
         public int acceleration { get; set; }
         public int hop { get; set; }
@@ -39,7 +41,7 @@ namespace Anachron
 
             moving = false;
             //eventually this should point towards the middle of the screen depending on where the player is initially placed.
-            right = true;
+            direction = Direction.Right;
         }
 
         public void Update()
@@ -51,12 +53,12 @@ namespace Anachron
 
         public void IsGoingRight()
         {
-            right = true;
+            direction = Direction.Right;
         }
 
         public void IsGoingLeft()
         {
-            right = false;
+            direction = Direction.Left;
         }
 
         public void IsMoving(bool Moving)
@@ -71,12 +73,14 @@ namespace Anachron
             //int row = (int)((float)currentFrame / (float)Columns);
             
             int row = 0;
-            Console.WriteLine("right: " + this.right + " -- " +  "moving: " + this.moving);
-            
-            if (!this.right)
-                row += 1;
+            Console.WriteLine("right: " + this.direction + " -- " +  "moving: " + this.moving);
 
-            int currentAcceleration = acceleration;
+            if (this.direction == Direction.Left)
+            {
+                row += 1;
+            }
+
+            //int currentAcceleration = acceleration;
 
             if (this.moving)
             {
@@ -89,13 +93,13 @@ namespace Anachron
                     hop = -hop;
                 }
 
-                if (this.right)
+                if (this.direction == Direction.Right)
                 {
-                    this.x += currentAcceleration;
+                    this.x += acceleration;
                 }
                 else
                 { 
-                    this.x -= currentAcceleration;
+                    this.x -= acceleration;
                 }
 
             }

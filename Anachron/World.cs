@@ -14,6 +14,6 @@ namespace Anachron
             _characters.Add(character);
         }
 
-        public List<Character> Characters { get { return _characters }};
+        public List<Character> Characters { get { return _characters; } }
     }
 }

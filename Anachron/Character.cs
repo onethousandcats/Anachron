@@ -18,10 +18,14 @@ namespace Anachron
         private int totalFrames;
 
         private bool moving;
+        private bool jumping;
         private Direction direction;
 
+        private int speed;
+        private int strength;
+        private int range;
+
         public int acceleration { get; set; }
-        public int hop { get; set; }
 
         public int x { get; set; }
         public int y { get; set; }
@@ -42,8 +46,7 @@ namespace Anachron
             this.y = y;
 
             acceleration = 6;
-            //hop = 0;
-
+            
             moving = false;
             //eventually this should point towards the middle of the screen depending on where the player is initially placed.
             direction = Direction.Right;
@@ -90,13 +93,6 @@ namespace Anachron
             if (this.moving)
             {
                 row += 2;
-
-                if (currentFrame % 2 == 0)
-                {
-                    //currentAcceleration = currentAcceleration;
-                    this.y += hop;
-                    hop = -hop;
-                }
 
                 if (this.direction == Direction.Right)
                 {

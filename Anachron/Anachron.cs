@@ -19,7 +19,7 @@ namespace Anachron
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private World _world;
+        private World _world = new World();
 
         int frameRate = 8; //100 = 1 seconds
         int time = 0;
@@ -62,7 +62,7 @@ namespace Anachron
             Texture2D k = Content.Load<Texture2D>("astro");
             Character astro = new Character(k, 100, 100);
 
-            _world.AddPlayer(astro);
+            _world.Player = astro;
 
         }
 
@@ -131,6 +131,7 @@ namespace Anachron
             {
                 c.Draw(spriteBatch, new Vector2(c.x, c.y));
             }
+
             base.Draw(gameTime);
         }
     }

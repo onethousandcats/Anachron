@@ -17,13 +17,21 @@ namespace Anachron
         }
 
         public List<Character> OtherPlayers { get { return _otherPlayers; } }
-        
-        public Character Player { get { return _player;  } }
+
+        public Character Player { get { return _player; } set { _player = value; } }
         
         public List<Character> AllPlayers { 
             get {
-                _otherPlayers.Add(Player);
-                return _otherPlayers;
+                List<Character> allPlayers = new List<Character>();
+
+                foreach (var o in OtherPlayers)
+                {
+                    allPlayers.Add(o);
+                }
+
+                allPlayers.Add(_player);
+
+                return allPlayers;
             }
         }
     }

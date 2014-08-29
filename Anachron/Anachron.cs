@@ -62,7 +62,7 @@ namespace Anachron
             Texture2D k = Content.Load<Texture2D>("astro");
             Character astro = new Character(k, 100, 100);
 
-            _world.AddCharacter(astro);
+            _world.AddPlayer(astro);
 
         }
 
@@ -88,36 +88,27 @@ namespace Anachron
             if (Keyboard.GetState().GetPressedKeys().Length == 0)
             {
                 //no keys are being pressed, character is not moving
-                foreach (Character c in _world.Characters)
-                {
-                    c.IsMoving(false);
-                }
+                _world.Player.IsMoving(false);
 
             }
             
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                foreach (Character c in _world.Characters)
-                {
-                    c.IsMoving(true);
-                    c.IsGoingRight();
-                }
+                _world.Player.IsMoving(true);
+                _world.Player.IsGoingRight();
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                foreach (Character c in _world.Characters)
-                {
-                    c.IsMoving(true);
-                    c.IsGoingLeft();
-                }
+                _world.Player.IsMoving(true);
+                _world.Player.IsGoingLeft();
             }
 
             time++;
             if (time == frameRate)
             { 
-                foreach (Character c in _world.Characters)
+                foreach (Character c in _world.AllPlayers)
                 {
                     c.Update();
                 }
@@ -136,7 +127,7 @@ namespace Anachron
         {
             GraphicsDevice.Clear(Color.White);
 
-            foreach (Character c in _world.Characters)
+            foreach (Character c in _world.AllPlayers)
             {
                 c.Draw(spriteBatch, new Vector2(c.x, c.y));
             }

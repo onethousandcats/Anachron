@@ -26,6 +26,11 @@ namespace Anachron
         public int x { get; set; }
         public int y { get; set; }
 
+        public Character()
+        {
+
+        }
+
         public Character(Texture2D character, int x, int y)
         {
             _character = character;

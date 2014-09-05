@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,11 @@ namespace Anachron
 {
     enum Direction { Left, Right };
 
-    class Character
+    public class Astronaut : Character
+    {
+    }
+
+    public class Character
     {
         private Texture2D _character;
         public int Rows { get; set; }
@@ -18,17 +23,31 @@ namespace Anachron
         private int totalFrames;
 
         private bool moving;
-        private bool jumping;
+        public bool falling { get; set; }
+        public bool jumping { get; set; }
+
+        private bool alive;
+
+        public int JumpVelocity { get; set; }
+
         private Direction direction;
 
-        private int speed;
-        private int strength;
-        private int range;
+        public int speed { get; set; }
+        public int strength { get; set; }
+        public int range { get; set; }
 
         public int acceleration { get; set; }
 
+        public int Height { get; set; }
+        public int Width { get; set; }
+
         public int x { get; set; }
         public int y { get; set; }
+
+        public int vx { get; set; }
+        public int vy { get; set; }
+
+        public int Feet { get { return this.y + this.Height; } }
 
         public Character()
         {
@@ -45,9 +64,17 @@ namespace Anachron
             this.x = x;
             this.y = y;
 
-            acceleration = 6;
+            this.vx = 6;
+            this.vy = 0;
+
+            this.Width = _character.Width / Columns;
+            this.Height = _character.Height / Rows;
             
             moving = false;
+            falling = true;
+
+            JumpVelocity = 10;
+
             //eventually this should point towards the middle of the screen depending on where the player is initially placed.
             direction = Direction.Right;
         }
@@ -57,6 +84,21 @@ namespace Anachron
             currentFrame++;
             if (currentFrame == totalFrames)
                 currentFrame = 0;
+        }
+
+        public void Jump()
+        {
+            if (!this.falling)
+            { 
+                this.vy = -(this.JumpVelocity);
+                this.jumping = true;
+            }
+        }
+
+        public void Grounded()
+        {
+            this.falling = false;
+            this.jumping = false;
         }
 
         public void IsGoingRight()
@@ -76,12 +118,10 @@ namespace Anachron
 
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
         {
-            int width = _character.Width / Columns;
-            int height = _character.Height / Rows;
+           
             //int row = (int)((float)currentFrame / (float)Columns);
             
             int row = 0;
-            Console.WriteLine("right: " + this.direction + " -- " +  "moving: " + this.moving);
             
             if (this.direction == Direction.Left)
             {
@@ -96,19 +136,19 @@ namespace Anachron
 
                 if (this.direction == Direction.Right)
                 {
-                    this.x += acceleration;
+                    this.x += this.vx;
                 }
                 else
                 { 
-                    this.x -= acceleration;
+                    this.x -= this.vx;
                 }
 
             }
 
             int column = currentFrame % Columns;
 
-            Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
-            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, width, height);
+            Rectangle sourceRectangle = new Rectangle(Width * column, Height * row, Width, Height);
+            Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, Width, Height);
 
             spriteBatch.Begin();
             spriteBatch.Draw(_character, destinationRectangle, sourceRectangle, Color.White);

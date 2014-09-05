@@ -59,10 +59,16 @@ namespace Anachron
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            Texture2D k = Content.Load<Texture2D>("astro");
-            Character astro = new Character(k, 100, 100);
+            Texture2D a = Content.Load<Texture2D>("astro");
+            Character astro = new Character(a, 100, 100);
+
+            Texture2D g = Content.Load<Texture2D>("ground");
+            Collidable ground = new Collidable(g, 100, 600);
+            Collidable ground2 = new Collidable(g, ground.x + ground.Width + 100, 600);
 
             _world.Player = astro;
+            _world.Objects.Add(ground);
+            _world.Objects.Add(ground2);
 
         }
 
@@ -92,7 +98,6 @@ namespace Anachron
 
             }
             
-
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 _world.Player.IsMoving(true);
@@ -104,6 +109,16 @@ namespace Anachron
                 _world.Player.IsMoving(true);
                 _world.Player.IsGoingLeft();
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                _world.Player.Jump();
+
+            }
+
+            //apply gravity here
+            _world.CheckFloor();
+            _world.ApplyGravity();
 
             time++;
             if (time == frameRate)
@@ -125,11 +140,16 @@ namespace Anachron
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             foreach (Character c in _world.AllPlayers)
             {
                 c.Draw(spriteBatch, new Vector2(c.x, c.y));
+            }
+
+            foreach (Collidable c in _world.Objects)
+            {
+                c.Draw(spriteBatch);
             }
 
             base.Draw(gameTime);

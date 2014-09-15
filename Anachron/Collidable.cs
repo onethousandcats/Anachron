@@ -45,14 +45,15 @@ namespace Anachron
             var futureX = c.x + c.vx;
             var futureY = c.Feet + c.vy;
 
-            Console.WriteLine(futureY + "..." + this.y);
-
             if (this.x < futureX && this.x + this.Width > futureX)
             {
-                //is between the object
-                if (this.y < futureY && this.y > c.Feet)
-                {
-                    return true;
+                if(this.y > c.y)
+                { 
+                    //is between the object
+                    if (this.y < futureY && this.y + this.Height > futureY)
+                    {
+                        return true;
+                    }
                 }
             }
 

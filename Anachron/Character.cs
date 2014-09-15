@@ -9,6 +9,7 @@ using System.Text;
 namespace Anachron
 {
     enum Direction { Left, Right };
+    enum AnimationCycle { StandRight, StandLeft, RunRight, RunLeft, ShootRight, ShootLeft, FallingRight, FallingLeft };
 
     public class Astronaut : Character
     {
@@ -25,12 +26,14 @@ namespace Anachron
         private bool moving;
         public bool falling { get; set; }
         public bool jumping { get; set; }
+        public bool attacking { get; set; }
 
         private bool alive;
 
         public int JumpVelocity { get; set; }
 
         private Direction direction;
+        private AnimationCycle animationCycle;
 
         public int speed { get; set; }
         public int strength { get; set; }
@@ -57,7 +60,7 @@ namespace Anachron
         public Character(Texture2D character, int x, int y)
         {
             _character = character;
-            Rows = 6;
+            Rows = 8;
             Columns = 4;
             currentFrame = 0;
             totalFrames = Columns;
@@ -72,8 +75,9 @@ namespace Anachron
             
             moving = false;
             falling = true;
+            attacking = false;
 
-            JumpVelocity = 10;
+            JumpVelocity = 16;
 
             //eventually this should point towards the middle of the screen depending on where the player is initially placed.
             direction = Direction.Right;
@@ -118,36 +122,47 @@ namespace Anachron
 
         public void Draw(SpriteBatch spriteBatch, Vector2 location)
         {
-           
-            //int row = (int)((float)currentFrame / (float)Columns);
-            
-            int row = 0;
-            
+
+            animationCycle = AnimationCycle.StandRight;
+
+            Console.WriteLine(this.x + ": " + this.y);
+
             if (this.direction == Direction.Left)
             {
-                row += 1;
+                animationCycle = AnimationCycle.StandLeft;
             }
-
-            //int currentAcceleration = acceleration;
 
             if (this.moving)
             {
-                row += 2;
+                animationCycle = AnimationCycle.RunRight;
 
                 if (this.direction == Direction.Right)
                 {
                     this.x += this.vx;
                 }
                 else
-                { 
+                {
+                    animationCycle = AnimationCycle.RunLeft;
                     this.x -= this.vx;
                 }
 
             }
 
+            if (this.falling)
+            {
+                if (this.direction == Direction.Left)
+                {
+                    animationCycle = AnimationCycle.FallingLeft;
+                }
+                else
+                {
+                    animationCycle = AnimationCycle.FallingRight;
+                }
+            }
+
             int column = currentFrame % Columns;
 
-            Rectangle sourceRectangle = new Rectangle(Width * column, Height * row, Width, Height);
+            Rectangle sourceRectangle = new Rectangle(Width * column, Height * (int) animationCycle, Width, Height);
             Rectangle destinationRectangle = new Rectangle((int)location.X, (int)location.Y, Width, Height);
 
             spriteBatch.Begin();

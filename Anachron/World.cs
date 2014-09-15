@@ -7,7 +7,7 @@ namespace Anachron
 {
     class World
     {
-        private const int TerminalVelocity = 4;
+        private const int TerminalVelocity = 6;
         private const int Gravity = 1; 
 
         private Character _player = new Character();

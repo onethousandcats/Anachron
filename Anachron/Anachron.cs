@@ -60,15 +60,19 @@ namespace Anachron
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D a = Content.Load<Texture2D>("astro");
-            Character astro = new Character(a, 100, 100);
+            Character astro = new Character(a, 400, 100);
 
             Texture2D g = Content.Load<Texture2D>("ground");
             Collidable ground = new Collidable(g, 100, 600);
             Collidable ground2 = new Collidable(g, ground.x + ground.Width + 100, 600);
+            Collidable ground3 = new Collidable(g, ground2.x + ground2.Width + 100, 600);
+            Collidable ground4 = new Collidable(g, 130, 500);
 
             _world.Player = astro;
             _world.Objects.Add(ground);
             _world.Objects.Add(ground2);
+            _world.Objects.Add(ground3);
+            _world.Objects.Add(ground4);
 
         }
 
